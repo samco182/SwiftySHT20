@@ -4,25 +4,19 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftySHT20",
-    products: [
-        // Products define the executables and libraries produced by a package, and make them visible to other packages.
-        .library(
-            name: "SwiftySHT20",
-            targets: ["SwiftySHT20"]),
-    ],
+    name: "SwiftySHT20Example",
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        .package(path: "../"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "SwiftySHT20",
-            dependencies: []),
-        .testTarget(
-            name: "SwiftySHT20Tests",
+            name: "SwiftySHT20Example",
             dependencies: ["SwiftySHT20"]),
+        .testTarget(
+            name: "SwiftySHT20ExampleTests",
+            dependencies: ["SwiftySHT20Example"]),
     ]
 )
