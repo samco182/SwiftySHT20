@@ -10,6 +10,7 @@ import SwiftyGPIO
 public class SwiftySHT20 {
     // MARK: Variables Declaration
     private let i2c: I2CInterface
+    private let deviceAddress = Constants.deviceAddress
     
     // MARK: Initializers
     public init(for board: SupportedBoard) {
@@ -21,8 +22,26 @@ public class SwiftySHT20 {
         self.init(for: .RaspberryPi3)
     }
     
+    // MARK: Public Methods
     
-    public init(text: String = "Hello, World!") {
-        self.text = text
+    /// Reads the content of the sensor's current User Register.
+    /// - Returns: The sensor's current User Register
+    public func readUserRegister() -> UserRegister {
+        write(command: .readUserRegister)
+        let byte = readByte()
+        return UserRegister(rawData: byte)
+    }
+    
+    // MARK: Private Methods
+    private func write(command: SensorCommand) {
+        writeByte(value: command.rawValue)
+    }
+    
+    private func writeByte(value: UInt8) {
+        i2c.writeByte(deviceAddress, value: value)
+    }
+    
+    private func readByte() -> UInt8 {
+        return i2c.readByte(deviceAddress)
     }
 }
