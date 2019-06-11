@@ -5,6 +5,12 @@
 //  Created by Samuel Cornejo on 5/30/19.
 //
 
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin.C
+#endif
+
 import SwiftyGPIO
 
 public class SwiftySHT20 {
@@ -22,7 +28,7 @@ public class SwiftySHT20 {
         self.init(for: .RaspberryPi3)
     }
     
-    // MARK: Public Methods
+    // MARK: User Register
     
     /// Reads the content of the sensor's current User Register.
     /// - Returns: The sensor's current User Register
@@ -63,6 +69,19 @@ public class SwiftySHT20 {
     public func activateEndOfBatteryAlert(_ isActive: Bool) {
         let register = readUserRegister().activateEndOfBatteryAlert(isActive)
         writeUserRegister(register)
+    }
+    
+    // MARK: Soft Reset
+    
+    /// Reboots the sensor system without switching the power off and on again. Upon reception of this command, the sensor system reinitializes and starts operation according to the default settings.
+    /// - Note: The soft reset takes less than 15ms.
+    public func softReset() {
+        print("Soft Reset: Starting 🚗")
+        
+        write(command: .softReset)
+        usleep(Constants.softResetWaitPeriod)
+        
+        print("Soft Reset: Done ✅")
     }
     
     // MARK: Private Methods

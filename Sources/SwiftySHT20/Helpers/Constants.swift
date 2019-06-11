@@ -41,4 +41,5 @@ public enum Constants {
     public static let resolutionMask: UInt8 = 0x81 // Binary: 1000 0001
     public static let continuousWriteCommand: UInt8 = 0xE6 // Binary: 1110 0110
     public static let noHoldWaitPeriod: Int = 20 // Micro-seconds
+    public static let softResetWaitPeriod: UInt32 = 15_000 // Micro-seconds
 }
