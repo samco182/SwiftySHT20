@@ -32,13 +32,33 @@ public class SwiftySHT20 {
         return UserRegister(rawData: byte)
     }
     
+    /// Writes new content to the sensor's User Register.
+    /// - Parameter userRegister: The new content to be written
+    /// - Note: According to the data sheet, User Register contains reserved bits which must not be manually changed, since its default values
+    /// may change over time without prior notice. Therefore, for any writing to the User Register, default values of reserved bits must be read first and passed on.
+    public func writeUserRegister(_ userRegister: UserRegister) {
+        write(command: .writeUserRegister)
+        writeByte(command: Constants.continuousWriteCommand, value: userRegister.rawData)
+    }
+    
+    /// Sets the sensor's measurement resolution to a new value.
+    /// - Parameter resolution: The new measurement resolution for the sensor
+    public func setResolution(_ resolution: UserRegisterMask.Resolution) {
+        let register = readUserRegister().setResolution(resolution)
+        writeUserRegister(register)
+    }
+    
     // MARK: Private Methods
     private func write(command: SensorCommand) {
         writeByte(value: command.rawValue)
     }
     
-    private func writeByte(value: UInt8) {
-        i2c.writeByte(deviceAddress, value: value)
+    private func writeByte(command: UInt8 = 0, value: UInt8) {
+        if command == 0 {
+            i2c.writeByte(deviceAddress, value: value)
+        } else {
+            i2c.writeByte(deviceAddress, command: command, value: value)
+        }
     }
     
     private func readByte() -> UInt8 {
