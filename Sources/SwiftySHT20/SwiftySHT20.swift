@@ -48,6 +48,14 @@ public class SwiftySHT20 {
         writeUserRegister(register)
     }
     
+    /// Sets the sensors's on-chip heater status to be either enabled or disabled.
+    /// - Parameter isEnabled: Whether heater status is enabled or disabled
+    /// - Note: User Register on-chip heater status is disabled by default.
+    public func enableOnChipHeater(_ isEnabled: Bool) {
+        let register = readUserRegister().enableOnChipHeater(isEnabled)
+        writeUserRegister(register)
+    }
+    
     // MARK: Private Methods
     private func write(command: SensorCommand) {
         writeByte(value: command.rawValue)

@@ -30,10 +30,14 @@ public enum UserRegisterMask: UInt8 {
     }
 }
 
+public enum UserRegisterResetMask: UInt8 {
+    case resolution = 0x7E // Binary: 0111 1110
+    case enableOnChipHeater = 0xFB // Binary: 1111 1011
+}
+
 public enum Constants {
     public static let deviceAddress: Int = 0x40 // Binary: 0100 0000
     public static let resolutionMask: UInt8 = 0x81 // Binary: 1000 0001
-    public static let resolutionResetMask: UInt8 = 0x7E // Binary: 0111 1110
     public static let continuousWriteCommand: UInt8 = 0xE6 // Binary: 1110 0110
     public static let noHoldWaitPeriod: Int = 20 // Micro-seconds
 }
