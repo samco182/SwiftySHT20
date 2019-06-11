@@ -60,4 +60,17 @@ public struct UserRegister {
         
         return UserRegister(rawData: data)
     }
+    
+    /// Sets the new User Register's end of battery alert status.
+    /// - Parameter isActive: Whether end of battery alert is activated or deactivated
+    /// - Returns: The User Register with the new end of battery alert status.
+    public func activateEndOfBatteryAlert(_ isActive: Bool) -> UserRegister {
+        var data = rawData & UserRegisterResetMask.statusEndOfBattery.rawValue
+        
+        if isActive {
+            data = data | UserRegisterMask.statusEndOfBattery.rawValue
+        }
+        
+        return UserRegister(rawData: data)
+    }
 }

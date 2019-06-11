@@ -33,6 +33,7 @@ public enum UserRegisterMask: UInt8 {
 public enum UserRegisterResetMask: UInt8 {
     case resolution = 0x7E // Binary: 0111 1110
     case enableOnChipHeater = 0xFB // Binary: 1111 1011
+    case statusEndOfBattery = 0xBF // Binary: 1011 1111
 }
 
 public enum Constants {

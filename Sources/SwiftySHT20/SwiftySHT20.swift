@@ -43,6 +43,7 @@ public class SwiftySHT20 {
     
     /// Sets the sensor's measurement resolution to a new value.
     /// - Parameter resolution: The new measurement resolution for the sensor
+    /// - Note: User Register resolution is rh12T14: Humidity 12 bit, Temperature 14 bit by default.
     public func setResolution(_ resolution: UserRegisterMask.Resolution) {
         let register = readUserRegister().setResolution(resolution)
         writeUserRegister(register)
@@ -53,6 +54,14 @@ public class SwiftySHT20 {
     /// - Note: User Register on-chip heater status is disabled by default.
     public func enableOnChipHeater(_ isEnabled: Bool) {
         let register = readUserRegister().enableOnChipHeater(isEnabled)
+        writeUserRegister(register)
+    }
+    
+    /// Sets the sensor's end of battery alert to be either activated or deactivated.
+    /// - Parameter isActive: Whether end of battery alert is activated or deactivated
+    /// - Note: User Register end of battery alert is deactivated by default. This status bit is updated **after each measurement**.
+    public func activateEndOfBatteryAlert(_ isActive: Bool) {
+        let register = readUserRegister().activateEndOfBatteryAlert(isActive)
         writeUserRegister(register)
     }
     
