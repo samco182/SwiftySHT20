@@ -28,6 +28,20 @@ public class SwiftySHT20 {
         self.init(for: .RaspberryPi3)
     }
     
+    // MARK: Temperature & Humidity
+    
+    /// Reads the sensor's temperature measurement.
+    /// - Returns: Temperature in °C and °F
+    /// - Note: Measured data is transferred in two byte packages, i.e. in frames of 8 bit length where the most significant bit (MSB) is transferred first (left aligned).
+    /// The two status bits, the last bits of LSB, must be set to ‘0’ before calculating physical values.
+    public func readTemperature() -> Temperature {
+        write(command: .triggerTemperatureReadNoHold)
+        usleep(Constants.noHoldWaitPeriod) // Recommended by sensor's data sheet
+        let msb = readByte()
+        let lsb = readByte()
+        return Temperature(msb: msb, lsb: lsb)
+    }
+    
     // MARK: User Register
     
     /// Reads the content of the sensor's current User Register.

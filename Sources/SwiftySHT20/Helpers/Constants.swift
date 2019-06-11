@@ -40,6 +40,8 @@ public enum Constants {
     public static let deviceAddress: Int = 0x40 // Binary: 0100 0000
     public static let resolutionMask: UInt8 = 0x81 // Binary: 1000 0001
     public static let continuousWriteCommand: UInt8 = 0xE6 // Binary: 1110 0110
-    public static let noHoldWaitPeriod: Int = 20 // Micro-seconds
+    public static let measurementReading14BitsMask: UInt16 = 0xFFFC // Binary: 1111 1111 1111 1100
+    public static let leftShift16Bits: Int = 8 // Positions
+    public static let noHoldWaitPeriod: UInt32 = 100_000 // Micro-seconds
     public static let softResetWaitPeriod: UInt32 = 15_000 // Micro-seconds
 }
