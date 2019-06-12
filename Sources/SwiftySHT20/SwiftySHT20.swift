@@ -31,7 +31,7 @@ public class SwiftySHT20 {
     // MARK: Temperature & Humidity
     
     /// Reads the sensor's temperature measurement.
-    /// - Returns: Temperature in °C and °F
+    /// - Returns: Temperature object with values in °C and °F
     /// - Note: Measured data is transferred in two byte packages, i.e. in frames of 8 bit length where the most significant bit (MSB) is transferred first (left aligned).
     /// The two status bits, the last bits of LSB, must be set to ‘0’ before calculating physical values.
     public func readTemperature() -> Temperature {
@@ -40,6 +40,19 @@ public class SwiftySHT20 {
         let msb = readByte()
         let lsb = readByte()
         return Temperature(msb: msb, lsb: lsb)
+    }
+    
+    
+    /// Reads the sensor's relative humidity measurement.
+    /// - Returns: Humidity object with value in percentage
+    /// - Note: Measured data is transferred in two byte packages, i.e. in frames of 8 bit length where the most significant bit (MSB) is transferred first (left aligned).
+    /// The two status bits, the last bits of LSB, must be set to ‘0’ before calculating physical values.
+    public func readHumidity() -> Humidity {
+        write(command: .triggerHumidityReadNoHold)
+        usleep(Constants.noHoldWaitPeriod) // Recommended by sensor's data sheet
+        let msb = readByte()
+        let lsb = readByte()
+        return Humidity(msb: msb, lsb: lsb)
     }
     
     // MARK: User Register
