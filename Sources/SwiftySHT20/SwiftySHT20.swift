@@ -35,24 +35,15 @@ public class SwiftySHT20 {
     /// - Note: Measured data is transferred in two byte packages, i.e. in frames of 8 bit length where the most significant bit (MSB) is transferred first (left aligned).
     /// The two status bits, the last bits of LSB, must be set to ‘0’ before calculating physical values.
     public func readTemperature() -> Temperature {
-        write(command: .triggerTemperatureReadNoHold)
-        usleep(Constants.noHoldWaitPeriod) // Recommended by sensor's data sheet
-        let msb = readByte()
-        let lsb = readByte()
-        return Temperature(msb: msb, lsb: lsb)
+        return readMeasurement(command: .triggerTemperatureReadNoHold)
     }
-    
     
     /// Reads the sensor's relative humidity measurement.
     /// - Returns: Humidity object with value in percentage
     /// - Note: Measured data is transferred in two byte packages, i.e. in frames of 8 bit length where the most significant bit (MSB) is transferred first (left aligned).
     /// The two status bits, the last bits of LSB, must be set to ‘0’ before calculating physical values.
     public func readHumidity() -> Humidity {
-        write(command: .triggerHumidityReadNoHold)
-        usleep(Constants.noHoldWaitPeriod) // Recommended by sensor's data sheet
-        let msb = readByte()
-        let lsb = readByte()
-        return Humidity(msb: msb, lsb: lsb)
+        return readMeasurement(command: .triggerHumidityReadNoHold)
     }
     
     // MARK: User Register
@@ -126,5 +117,13 @@ public class SwiftySHT20 {
     
     private func readByte() -> UInt8 {
         return i2c.readByte(deviceAddress)
+    }
+    
+    private func readMeasurement<T: Measurement>(command: SensorCommand) -> T {
+        write(command: command)
+        usleep(Constants.noHoldWaitPeriod) // Recommended by sensor's data sheet
+        let msb = readByte()
+        let lsb = readByte()
+        return T(msb: msb, lsb: lsb)
     }
 }

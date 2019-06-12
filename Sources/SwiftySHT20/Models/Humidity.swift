@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Humidity {
+public struct Humidity: Measurement {
     // MARK: Variables Declaration
     
     /// The relative humidity raw data

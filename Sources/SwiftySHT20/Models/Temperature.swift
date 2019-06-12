@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Temperature {
+public struct Temperature: Measurement {
     // MARK: Variables Declaration
     
     /// The temperature measurement raw data
