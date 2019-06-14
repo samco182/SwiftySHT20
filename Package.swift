@@ -21,8 +21,5 @@ let package = Package(
         .target(
             name: "SwiftySHT20",
             dependencies: ["SwiftyGPIO"]),
-        .testTarget(
-            name: "SwiftySHT20Tests",
-            dependencies: ["SwiftySHT20"]),
     ]
 )
