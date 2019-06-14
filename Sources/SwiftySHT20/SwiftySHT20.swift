@@ -102,6 +102,14 @@ public class SwiftySHT20 {
         print("Soft Reset: Done ✅")
     }
     
+    // MARK: Sensor Status
+    
+    /// Helper function to know the sensor's reachability status.
+    /// - Returns: Whether the sensor is reachable or not
+    public func isDeviceReachable() -> Bool {
+        return i2c.isReachable(deviceAddress)
+    }
+    
     // MARK: Private Methods
     private func write(command: SensorCommand) {
         writeByte(value: command.rawValue)
