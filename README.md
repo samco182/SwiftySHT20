@@ -27,7 +27,7 @@ Every board supported by [SwiftyGPIO](https://github.com/uraimo/SwiftyGPIO): Ras
 
 To use this library, you'll need a Linux ARM board running [Swift 4.x](https://github.com/uraimo/buildSwiftOnARM) 🚗.
 
-The example below will use a Raspberry Pi 3B+  board, but you can easily modify the example to use one the other supported boards. A full working demo project for the RaspberryPi3B+ is available in the *Example* directory.
+The example below will use a Raspberry Pi 3B+  board, but you can easily modify the example to use one of the other supported boards. A full working demo project for the RaspberryPi3B+ is available in the **Example** directory.
 
 ## Installation
 First of all, makes sure your board is running **Swift 4.x** ⚠️!
@@ -36,13 +36,15 @@ Since Swift 4.x supports Swift Package Manager, you only need to add SwiftySHT20
 
 ```swift
 let package = Package(
-name: "MyProject",
-dependencies: [
-.package(url: "https://github.com/samco182/SwiftySHT20", from: "1.0.0"),
-]
-targets: [
-.target(name: "MyProject", dependencies: ["SwiftySHT20"]),
-]
+    name: "MyProject",
+    dependencies: [
+        .package(url: "https://github.com/samco182/SwiftySHT20", from: "1.0.0"),
+    ]
+    targets: [
+        .target(
+            name: "MyProject", 
+            dependencies: ["SwiftySHT20"]),
+    ]
 )
 ```
 Then run `swift package update` to install the dependency.
@@ -56,11 +58,11 @@ import SwiftySHT20
 let sht20 = SwiftySHT20(for: .RaspberryPi3) 
 
 if sht20.isDeviceReachable() {
-let temperature = sht20.readTemperature()
-let humidity = sht20.readHumidity()
+    let temperature = sht20.readTemperature()
+    let humidity = sht20.readHumidity()
 
-print(String(format: "Temperature: %.2f °C, ", temperature.cValue))
-print(String(format: "Humidity: %.2f", humidity.value)+"%\n\n")
+    print(String(format: "Temperature: %.2f °C, ", temperature.cValue))
+    print(String(format: "Humidity: %.2f", humidity.value)+"%\n\n")
 }
 ```
 
@@ -79,6 +81,6 @@ If by any chance you want to reset the sensor, you can easily do it by running t
 ```swift
 func softReset()
 ```
-### Note
+### Note 🔍
 If you encounter some problems connecting to the sensor, or `sht20.isDeviceReachable()` keeps returning `false` you could follow [this i2c debugging guide](https://github.com/uraimo/SwiftyGPIO/blob/master/docs/i2c-debugging.md).
 
