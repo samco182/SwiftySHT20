@@ -7,10 +7,16 @@ let sht20 = SwiftySHT20(for: .RaspberryPi3)
 
 while true {
     if sht20.isDeviceReachable() {
-        let temperature = sht20.readTemperature()
-        let humidity = sht20.readHumidity()
-        
-        print(String(format: "Temperature: %.2f °C, ", temperature.cValue))
-        print(String(format: "Humidity: %.2f", humidity.value)+"%\n\n")
+        do {
+            let temperature = try sht20.readTemperature()
+            let humidity = try sht20.readHumidity()
+            
+            print(String(format: "Temperature: %.2f °C, ", temperature.cValue))
+            print(String(format: "Humidity: %.2f", humidity.value)+"%\n\n")
+        } catch let error {
+            print("Error reading sensor's measurements: \(error).")
+            print("Resetting device....")
+            try? sht20.softReset()
+        }
     }
 }
