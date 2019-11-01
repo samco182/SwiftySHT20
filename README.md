@@ -25,20 +25,20 @@ The I2C pins on the RaspberryPi (pin 3 SDA, pin 5 SCL) need to be enabled via `r
 ## Supported Boards
 Every board supported by [SwiftyGPIO](https://github.com/uraimo/SwiftyGPIO): RaspberryPis, BeagleBones, C.H.I.P., etc...
 
-To use this library, you'll need a Linux ARM board running [Swift 4.x](https://github.com/uraimo/buildSwiftOnARM) 🚗.
+To use this library, you'll need a Linux ARM board running [Swift 5.x](https://github.com/uraimo/buildSwiftOnARM) 🚗.
 
 The example below will use a Raspberry Pi 3B+  board, but you can easily modify the example to use one of the other supported boards. A full working demo project for the RaspberryPi3B+ is available in the **Example** directory.
 
 ## Installation
-First of all, makes sure your board is running **Swift 4.x** ⚠️!
+First of all, makes sure your board is running **Swift 5.x** ⚠️!
 
-Since Swift 4.x supports Swift Package Manager, you only need to add SwiftySHT20 as a dependency in your project's `Package.swift` file:
+Since Swift 5.x supports Swift Package Manager, you only need to add SwiftySHT20 as a dependency in your project's `Package.swift` file:
 
 ```swift
 let package = Package(
     name: "MyProject",
     dependencies: [
-        .package(url: "https://github.com/samco182/SwiftySHT20", from: "1.0.0"),
+        .package(url: "https://github.com/samco182/SwiftySHT20", from: "2.0.0-beta1"),
     ]
     targets: [
         .target(
@@ -58,28 +58,32 @@ import SwiftySHT20
 let sht20 = SwiftySHT20(for: .RaspberryPi3) 
 
 if sht20.isDeviceReachable() {
-    let temperature = sht20.readTemperature()
-    let humidity = sht20.readHumidity()
-
-    print(String(format: "Temperature: %.2f °C, ", temperature.cValue))
-    print(String(format: "Humidity: %.2f", humidity.value)+"%\n\n")
+    do {
+        let temperature = try sht20.readTemperature()
+        let humidity = try sht20.readHumidity()
+        
+        print(String(format: "Temperature: %.2f °C, ", temperature.cValue))
+        print(String(format: "Humidity: %.2f", humidity.value)+"%\n\n")
+    } catch let error {
+        print("Error reading sensor's measurements: \(error).")
+    }
 }
 ```
 
 If you want to read the sensor's User Register or modify any of its configurable values, you can easily do it by using the following functions:
 ```swift
 // Reading User Register
-func readUserRegister() -> UserRegister
+func readUserRegister() throws -> UserRegister
 
 // Modifying User Register
-func setResolution(_ resolution: UserRegisterMask.Resolution)
-func enableOnChipHeater(_ isEnabled: Bool)
-func activateEndOfBatteryAlert(_ isActive: Bool)
+func setResolution(_ resolution: UserRegisterMask.Resolution) throws
+func enableOnChipHeater(_ isEnabled: Bool) throws
+func activateEndOfBatteryAlert(_ isActive: Bool) throws 
 ```
 
 If by any chance you want to reset the sensor, you can easily do it by running the following function without removing the power source:
 ```swift
-func softReset()
+func softReset() throws
 ```
 ### Note 🔍
 If you encounter some problems connecting to the sensor, or `sht20.isDeviceReachable()` keeps returning `false` you could follow [this i2c debugging guide](https://github.com/uraimo/SwiftyGPIO/blob/master/docs/i2c-debugging.md).
